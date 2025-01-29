@@ -1,0 +1,149 @@
+.layout {
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+    padding: 0 1rem;
+  }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    align-items: start;
+    height: calc(100vh - 150px);
+  }
+  
+  .logo {
+    font-family: "PT Sans Narrow", serif;
+    font-size: 1.5rem;
+    color: white;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .nav a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav a:hover {
+    color: #4C3DBD;
+  }
+  
+  .contactInfo {
+    max-width: 100%;
+  }
+  
+  .contactInfo h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    font-family: "Neonderthaw", serif;
+  }
+  
+  .contactInfo p {
+    color: #888;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  
+  .contactDetails {
+    margin-bottom: 2rem;
+  }
+  
+  .contactItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    color: #888;
+  }
+  
+  .socialLinks {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .socialLinks a {
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .socialLinks a:hover {
+    color: #4C3DBD;
+    transform: translateY(-2px);
+  }
+  
+  .contactForm {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .formGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .formGroup input,
+  .formGroup textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .formGroup textarea {
+    height: 150px;
+    resize: none;
+  }
+  
+  .formGroup input:focus,
+  .formGroup textarea:focus {
+    outline: none;
+    border-color: #4C3DBD;
+  }
+  
+  button {
+    width: 100%;
+    padding: 1rem;
+    background: #4C3DBD;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  button:hover {
+    background: #5C4DCD;
+  }
+  
+  @media (max-width: 768px) {
+    .main {
+      grid-template-columns: 1fr;
+    }
+  }

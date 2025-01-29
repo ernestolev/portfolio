@@ -1,0 +1,15 @@
+/*
+	jsrepo 1.29.1
+	Installed from https://reactbits.dev/default/
+	28-1-2025
+*/
+
+.squares-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  transition: transform 0.5s ease-out;
+}
