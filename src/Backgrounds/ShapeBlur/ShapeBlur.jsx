@@ -1,10 +1,4 @@
-/*
-	jsrepo 1.29.1
-	Installed from https://reactbits.dev/default/
-	29-1-2025
-*/
-
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 
 const vertexShader = /* glsl */ `
@@ -142,8 +136,18 @@ const ShapeBlur = ({
   circleEdge = 0.5,
 }) => {
   const mountRef = useRef();
+  const [opacity, setOpacity] = useState(0);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setOpacity(1);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+
+  useEffect(() => {
+
     const mount = mountRef.current;
     let animationFrameId;
     let time = 0,
@@ -256,7 +260,12 @@ const ShapeBlur = ({
     <div
       className={className}
       ref={mountRef}
-      style={{ width: "100%", height: "100%" }}
+      style={{ 
+        width: "100%", 
+        height: "100%",
+        opacity: opacity,
+        transition: "opacity 1s cubic-bezier(0.4, 0, 0.2, 1)"
+      }}
     />
   );
 };

@@ -1,0 +1,24 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /projects/{projectId} {
+      allow read: if true;  
+      allow write: if request.time < timestamp.date(2025, 2, 28);
+    }
+    
+    match /services/{serviceId} {
+      allow read: if true;
+      allow write: if request.time < timestamp.date(2025, 2, 28);
+    }
+    
+    match /info-contacto/{document=**} {
+      allow read: if true;
+      allow write: if request.time < timestamp.date(2025, 2, 28);
+    }
+
+    match /mensajes/{messageId} {
+      allow read: if request.time < timestamp.date(2025, 2, 28);
+      allow create: if true;  // Allow public message creation
+    }
+  }
+} 

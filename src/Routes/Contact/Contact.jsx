@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import styles from "./Contact.module.css";
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { FaPhone, FaClock } from 'react-icons/fa';
+
+
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -11,10 +16,70 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = (e) => {
+  const [contactInfo, setContactInfo] = useState({
+    email: '',
+    phone: '',
+    linkedin: '',
+    github: '',
+    location: '',
+    availability: ''
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+  const [loading, setLoading] = useState(true);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+
+    // Validate form
+    if (!formData.name || !formData.email || !formData.message) {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const messagesRef = collection(db, 'mensajes');
+      await addDoc(messagesRef, {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+        createdAt: new Date().toISOString(),
+        read: false
+      });
+
+      setFormData({ name: '', email: '', message: '' });
+      alert('Message sent successfully!');
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert(`Error sending message: ${error.message}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      try {
+        const docRef = doc(db, 'info-contacto', 'main');
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setContactInfo(docSnap.data());
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching contact info:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
 
   return (
     <div className={styles.layout}>
@@ -23,7 +88,7 @@ const Contact = () => {
         <nav className={styles.nav}>
           <Link to="/">Home</Link>
           <Link to="/projects">Projects</Link>
-          <Link to="/contact">Contact</Link>
+          <Link to="/contact"><span className={styles.resalt} >Contact</span> </Link>
         </nav>
       </header>
 
@@ -43,36 +108,64 @@ const Contact = () => {
           >
             Feel free to reach out for collaborations or just a friendly hello
           </motion.p>
-          
-          <motion.div 
-            className={styles.contactDetails}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <div className={styles.contactItem}>
-              <FaEnvelope />
-              <span>hello@example.com</span>
-            </div>
-            <div className={styles.contactItem}>
-              <FaMapMarkerAlt />
-              <span>Lima, Peru</span>
-            </div>
-          </motion.div>
+          {loading ? (
+            <div className={styles.loading}>Loading...</div>
+          ) : (
+            <>
+              <motion.div
+                className={styles.contactDetails}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              >
+                {contactInfo.email && (
+                  <div className={styles.contactItem}>
+                    <FaEnvelope />
+                    <span>{contactInfo.email}</span>
+                  </div>
+                )}
+                {contactInfo.location && (
+                  <div className={styles.contactItem}>
+                    <FaMapMarkerAlt />
+                    <span>{contactInfo.location}</span>
+                  </div>
+                )}
+                {contactInfo.phone && (
+                  <div className={styles.contactItem}>
+                    <FaPhone />
+                    <span>{contactInfo.phone}</span>
+                  </div>
+                )}
+                {contactInfo.availability && (
+                  <div className={styles.contactItem}>
+                    <FaClock />
+                    <span>{contactInfo.availability}</span>
+                  </div>
+                )}
+              </motion.div>
 
-          <motion.div 
-            className={styles.socialLinks}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <a href="#"><FaGithub /></a>
-            <a href="#"><FaLinkedin /></a>
-            <a href="#"><FaTwitter /></a>
-          </motion.div>
+              <motion.div
+                className={styles.socialLinks}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                {contactInfo.github && (
+                  <a href={contactInfo.github} target="_blank" rel="noopener noreferrer">
+                    <FaGithub />
+                  </a>
+                )}
+                {contactInfo.linkedin && (
+                  <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer">
+                    <FaLinkedin />
+                  </a>
+                )}
+              </motion.div>
+            </>
+          )}
         </div>
 
-        <motion.form 
+        <motion.form
           className={styles.contactForm}
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -84,7 +177,7 @@ const Contact = () => {
               type="text"
               placeholder="Your Name"
               value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             />
           </div>
           <div className={styles.formGroup}>
@@ -92,22 +185,24 @@ const Contact = () => {
               type="email"
               placeholder="Your Email"
               value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             />
           </div>
           <div className={styles.formGroup}>
             <textarea
               placeholder="Your Message"
               value={formData.message}
-              onChange={(e) => setFormData({...formData, message: e.target.value})}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
             />
           </div>
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             type="submit"
+            disabled={isSubmitting}
+            className={`${styles.submitButton} ${isSubmitting ? styles.submitting : ''}`}
           >
-            Send Message
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </motion.button>
         </motion.form>
       </main>

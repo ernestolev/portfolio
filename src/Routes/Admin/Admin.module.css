@@ -1,0 +1,395 @@
+.layout {
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.logo {
+    font-family: "PT Sans Narrow", serif;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.adminNav {
+    display: flex;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.navButton {
+    flex: 1;
+    padding: 1rem;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.navButton:hover {
+    background: rgba(76, 61, 189, 0.3);
+}
+
+.navButton.active {
+    background: #4C3DBD;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.techTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a1a;
+    padding: 2rem;
+    border-radius: 12px;
+    z-index: 1001;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid rgba(76, 61, 189, 0.2);
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.imageUploadGroup {
+    margin-bottom: 1.5rem;
+}
+
+.imagePreview {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.imagePreview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.formSection {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 2rem;
+}
+
+.formTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.cancelEdit {
+    background: transparent;
+    border: 1px solid #4C3DBD;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancelEdit:hover {
+    background: rgba(76, 61, 189, 0.2);
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup input,
+.formGroup textarea {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+.formGroup input:focus,
+.formGroup textarea:focus {
+    outline: none;
+    border-color: #4C3DBD;
+}
+
+.formGroup textarea {
+    height: 100px;
+    resize: none;
+}
+
+button {
+    padding: 1rem;
+    background: #4C3DBD;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gridContainer {
+    min-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+button:hover {
+    background: #5C4DCD;
+}
+
+.listHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.projectslistcontainer{
+    max-height: calc(70vh - 200px);
+    overflow-y: auto;
+
+}
+
+
+.projectsList {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    max-height: calc(90vh - 200px);
+}
+
+.addButton{
+    width: auto;
+}
+
+
+.projectslistcontainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.projectslistcontainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.projectslistcontainer::-webkit-scrollbar-thumb {
+    background: #4C3DBD;
+    border-radius: 4px;
+}
+
+.projectHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.projectTitle {
+    font-size: 1.2rem;
+    color: white;
+    margin: 0;
+}
+
+.projectActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.editBtn,
+.deleteBtn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.editBtn:hover {
+    background: #5C4DCD;
+}
+
+
+
+.deleteBtn:hover {
+    background: #ff6666;
+}
+
+
+
+
+.projectCard {
+    background: rgba(76, 61, 189, 0.1);
+    border: 1px solid rgba(76, 61, 189, 0.2);
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+
+.projectCard:hover {
+    transform: translateY(-2px);
+    background: rgba(76, 61, 189, 0.15);
+}
+
+
+
+.serviceCard,
+.contactCard {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.projectCard:hover,
+.serviceCard:hover,
+.contactCard:hover {
+    transform: translateY(-2px);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.cardTitle {
+    font-size: 1.2rem;
+    color: white;
+    margin: 0;
+}
+
+.cardContent {
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    background: rgba(76, 61, 189, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.contactsList {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0rem;
+}
+
+.contactsSection {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    height: 73vh;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.contactInfoForm {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.contactInfoForm .formGroup {
+    margin-bottom: 1rem;
+}
+
+.contactInfoForm input {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+}
+
+
+
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .adminNav {
+        flex-direction: column;
+    }
+
+    .main {
+        padding: 1rem;
+    }
+
+    .formSection {
+        padding: 1rem;
+    }
+}

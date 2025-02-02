@@ -6,63 +6,136 @@ import Projects from "./Routes/Projects/Projects";
 import Contact from "./Routes/Contact/Contact";
 import styles from "./App.module.css";
 import ShapeBlur from '../src/Backgrounds/ShapeBlur/ShapeBlur';
+import ShinyText from '../src/TextAnimations/ShinyText/ShinyText';
+import SplitText from '../src/TextAnimations/SplitText/SplitText';
+import Loading from '../src/Components/Loading/Loading';
+import Admin from '../src/Routes/Admin/Admin';
+import Login from './Routes/Login/Login';
+import ProtectedRoute from '../src/Routes/ProtectedRoute';
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+const Navigation = () => {
+
+  return (
+    <nav className={styles.nav}>
+      <Link to="/">Home</Link>
+      <Link to="/projects">Projects</Link>
+      <Link to="/contact">Contact</Link>
+    </nav>
+  );
+};
 
 
-const Navigation = () => (
-  <nav className={styles.nav}>
-    <Link to="/">Home</Link>
-    <Link to="/projects">Projects</Link>
-    <Link to="/contact">Contact</Link>
-  </nav>
-);
 
-const Home = () => (
-  <div className={styles.layout}>
-    <header className={styles.header}>
-      <h3 className={styles.logo}>Ernesto Levano</h3>
-      <Navigation />
-    </header>
 
-    <main className={styles.main}>
-      <div className={styles.leftContent}>
-        <h1>
-          <span className={styles.txt1}>Pragmatic</span>
-          <span className={styles.txt2}>DEVELOPER.</span>
-        </h1>
-      </div>
+const Home = () => {
 
-      <div className={styles.rightContent}>
-        <p>
-          Hi! I'm <strong>Ernesto Levano</strong>, a <span className={styles.highlight}>Peru-based software engineer</span> passionate about <strong>full-stack development</strong>, <span className={styles.highlight}>interactive web experiences</span>, and <strong>SaaS solutions</strong>.
-        </p>
-        <p>
-          I started as a <strong>backend developer</strong>, working with <span className={styles.code}>C, C++, and JavaScript</span> in <strong>serverless environments</strong>, but my fascination with <span className={styles.highlight}>immersive web experiences</span> led me to explore technologies like <strong>React, Three.js, and AWS</strong>.
-          During a <span className={styles.highlight}>research internship in Germany</span>, I contributed to <strong>Laminar</strong>, an innovative <span className={styles.highlight}>IoT platform</span>, applying <strong>agile methodologies</strong> and optimizing <span className={styles.highlight}>scalable architectures</span>.
-        </p>
-        <p>
-          Now, I'm focused on building <strong>high-performance digital products</strong> and <span className={styles.highlight}>SaaS platforms</span> that combine <strong>efficiency</strong>, <span className={styles.highlight}>interactivity</span>, and an <strong>outstanding user experience</strong>. 🚀
-        </p>
-      </div>
+  useEffect(() => {
+    AOS.refresh();
+  }, []);
 
-    </main>
+  const [textColor, setTextColor] = useState('#ffffff');
 
-    <footer className={styles.footer}>
-      <div className={styles.time}>
-        <PeruTime />
-      </div>
+  useEffect(() => {
+    const updateTextColor = () => {
+      const element = document.querySelector(`.${styles.rightContent}`);
+      if (element) {
+        const bgColor = window.getComputedStyle(element).backgroundColor;
+        const rgb = bgColor.match(/\d+/g);
+        if (rgb) {
+          // Calculate relative luminance
+          const r = parseInt(rgb[0]) / 255;
+          const g = parseInt(rgb[1]) / 255;
+          const b = parseInt(rgb[2]) / 255;
+          const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-      <div className={styles.social}>
-        <a href="https://github.com/ernestolev" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
-        <a href="https://www.linkedin.com/in/ernesto-levano-585a48203" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
-        <a href="https://www.instagram.com/ernesto.lev_/profilecard/?igsh=ZDZjOTY4Njd5eHdv " target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
-      </div>
+          // Set text color based on background luminance
+          setTextColor(luminance > 0.5 ? '#000000' : '#ffffff');
+        }
+      }
+    };
 
-      <div className={styles.copyright}>
-        © 2025 EDG
-      </div>
-    </footer>
-  </div>
-);
+    updateTextColor();
+    const observer = new MutationObserver(updateTextColor);
+    const element = document.querySelector(`.${styles.rightContent}`);
+
+    if (element) {
+      observer.observe(element, {
+        attributes: true,
+        attributeFilter: ['style', 'class'],
+        childList: true,
+        subtree: true
+      });
+    }
+
+    window.addEventListener('resize', updateTextColor);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateTextColor);
+    };
+  }, []);
+
+  return (
+
+    <div className={styles.layout} >
+      <header className={styles.header} data-aos="fade-down" data-aos-delay="500">
+        <Link to="/admin">
+          <h3 className={styles.logo}>Ernesto Levano</h3>
+
+        </Link>
+
+
+        <Navigation />
+      </header>
+
+      <main className={styles.main}>
+        <div className={styles.leftContent}>
+          <h1>
+            <SplitText
+              text={"Pragmatic"}
+              className={styles.txt1}
+              delay={150}
+              animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
+              animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
+              easing="easeOutCubic"
+              threshold={0.2}
+              rootMargin="-50px"
+            />
+            <ShinyText
+              text={"DEVELOPER."}
+              disabled={false}
+              speed={4}
+              className={styles.txt2}
+            />
+          </h1>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="800" className={styles.rightContent}>
+          <p>Hi! I'm Ernesto Levano, a Peru-based software engineer passionate about full-stack development, interactive web experiences, and SaaS solutions.</p>
+          <p>I started as a backend developer, working with C, C++, and JavaScript in serverless environments, but my fascination with immersive web experiences led me to explore technologies like React, Three.js, and AWS. During a research internship in Germany, I contributed to Laminar, an innovative IoT platform, applying agile methodologies and optimizing scalable architectures.</p>
+          <p>Now, I'm focused on building high-performance digital products and SaaS platforms that combine efficiency, interactivity, and an outstanding user experience. 🚀</p>
+        </div>
+      </main>
+
+      <footer className={styles.footer} >
+        <div className={styles.time} >
+          <PeruTime />
+        </div>
+
+        <div className={styles.social} >
+          <a href="https://github.com/ernestolev" target="_blank" rel="noopener noreferrer"><FaGithub /></a>
+          <a href="https://www.linkedin.com/in/ernesto-levano-585a48203" target="_blank" rel="noopener noreferrer"><FaLinkedin /></a>
+          <a href="https://www.instagram.com/ernesto.lev_/profilecard/?igsh=ZDZjOTY4Njd5eHdv " target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+        </div>
+
+        <div className={styles.copyright} >
+          © 2025 EDG
+        </div>
+      </footer>
+    </div>
+  );
+};
 
 const PeruTime = () => {
   const [time, setTime] = useState('');
@@ -95,6 +168,15 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </AnimatePresence>
   );
@@ -131,7 +213,7 @@ const AnimatedBackground = () => {
 
   return (
     <div style={{
-      position: 'absolute',
+      position: 'fixed',
       width: '100%',
       height: '100%',
       overflow: 'hidden',
@@ -152,14 +234,42 @@ const AnimatedBackground = () => {
 };
 
 const App = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      offset: 100,
+      easing: 'ease-in-out',
+      delay: 100
+    });
+
+    const timer = setTimeout(() => {
+      setLoading(false);
+      // Refresh AOS after loading screen
+      setTimeout(() => {
+        AOS.refresh();
+      }, 100);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Router>
-      <AnimatedBackground />
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <AnimatedRoutes />
-        </div>
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <AnimatedBackground />
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <AnimatedRoutes />
+            </div>
+          </div>
+        </>
+      )}
     </Router>
   );
 };

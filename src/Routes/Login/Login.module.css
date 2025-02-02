@@ -1,0 +1,77 @@
+.layout {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.loginContainer {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loginContainer h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: "PT Sans Narrow", serif;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.formGroup input:focus {
+    outline: none;
+    border-color: #4C3DBD;
+    background: rgba(76, 61, 189, 0.1);
+}
+
+.error {
+    background: rgba(255, 0, 0, 0.1);
+    color: #ff4444;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+button {
+    width: 100%;
+    padding: 1rem;
+    background: #4C3DBD;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #5C4DCD;
+}
+
+@media (max-width: 768px) {
+    .loginContainer {
+        padding: 2rem;
+    }
+}
