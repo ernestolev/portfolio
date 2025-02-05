@@ -5,9 +5,11 @@ import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../firebase';
 import styles from "./Projects.module.css";
+import ProjectModal from './ProjectModal';
 
-const ProjectCard = ({ title, description, tech, image, image2, github, live }) => {
+const ProjectCard = ({ project, onClick }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { title, description, tech, image, image2, github, live } = project;
 
   return (
     <motion.div
@@ -17,18 +19,21 @@ const ProjectCard = ({ title, description, tech, image, image2, github, live }) 
       transition={{ duration: 0.5 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onClick(project)}
     >
-      <div 
-        className={styles.projectImage} 
-        style={{ 
+      <div
+        className={styles.projectImage}
+        style={{
           backgroundImage: `url(${isHovered && image2 ? image2 : image})`,
           transition: 'background-image 0.3s ease'
-        }} 
+        }}
       />
       <div className={styles.projectContent}>
         <h3>{title}</h3>
         <p className={styles.description}>{description}</p>
-        <div className={styles.techStack}>{tech.join(" • ")}</div>
+        <div className={styles.techStack}>
+          {Array.isArray(tech) ? tech.join(" • ") : tech}
+        </div>
         <div className={styles.projectLinks}>
           <a href={github} target="_blank" rel="noopener noreferrer"><FaGithub /></a>
           <a href={live} target="_blank" rel="noopener noreferrer"><FaExternalLinkAlt /></a>
@@ -42,6 +47,8 @@ const Projects = () => {
 
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -62,17 +69,11 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  const asd = [
-    {
-      title: "Project One",
-      description: "A modern web application built with React and Node.js",
-      tech: ["React", "Node.js", "MongoDB"],
-      image: "https://via.placeholder.com/300x200",
-      github: "#",
-      live: "#"
-    },
-    // Add more projects as needed
-  ];
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
 
   return (
     <div className={styles.layout}>
@@ -108,13 +109,27 @@ const Projects = () => {
           {loading ? (
             <div className={styles.loading}>Loading...</div>
           ) : (
-            projects.map((project, index) => (
-              <ProjectCard key={project.id} {...project} />
+            projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onClick={handleProjectClick}
+              />
             ))
           )}
         </div>
+
       </main>
+      <ProjectModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedProject(null);
+        }}
+      />
     </div>
+
   );
 };
 
