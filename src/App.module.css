@@ -60,8 +60,8 @@
 }
 
 .logo {
+    font-family: "PT Sans Narrow", serif;
     font-size: 1.5rem;
-    font-weight: bold;
     color: white;
 }
 
@@ -212,9 +212,6 @@
         padding: 1.5rem 0;
     }
 
-    .logo {
-        font-size: 1rem;
-    }
     .txt1 {
         font-size: 3.7rem;
     }
@@ -234,7 +231,12 @@
     }
 
     .header {
-        padding: 0.5rem 0;
+        padding: 0px;
+        font-size: 0.7rem;
+        width: 100%;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        gap: 10px;
     }
 
     .nav {
