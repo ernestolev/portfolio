@@ -135,8 +135,18 @@ const ShapeBlur = ({
   circleSize = 0.3,
   circleEdge = 0.5,
 }) => {
+
   const mountRef = useRef();
   const [opacity, setOpacity] = useState(0);
+  const autoAnimRef = useRef({
+    targetX: 0,
+    targetY: 0,
+    currentX: 0,
+    currentY: 0,
+    speed: Math.random() * 0.3 + 0.1,
+    timeoutId: null
+  });
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -156,6 +166,20 @@ const ShapeBlur = ({
     const vMouse = new THREE.Vector2();
     const vMouseDamp = new THREE.Vector2();
     const vResolution = new THREE.Vector2();
+    let isMouseMoving = false;
+    let mouseTimeout;
+
+    const generateNewTarget = () => {
+      const rect = mount.getBoundingClientRect();
+      autoAnimRef.current.targetX = Math.random() * rect.width;
+      autoAnimRef.current.targetY = Math.random() * rect.height;
+      autoAnimRef.current.speed = Math.random() * 0.3 + 0.1;
+
+      autoAnimRef.current.timeoutId = setTimeout(generateNewTarget,
+        Math.random() * 3000 + 2000); // Random delay between 2-5 seconds
+    };
+
+
 
     let w = 1,
       h = 1;
@@ -192,6 +216,12 @@ const ShapeBlur = ({
     const onPointerMove = (e) => {
       const rect = mount.getBoundingClientRect();
       vMouse.set(e.clientX - rect.left, e.clientY - rect.top);
+      isMouseMoving = true;
+
+      clearTimeout(mouseTimeout);
+      mouseTimeout = setTimeout(() => {
+        isMouseMoving = false;
+      }, 100);
     };
 
     document.addEventListener("mousemove", onPointerMove);
@@ -228,13 +258,40 @@ const ShapeBlur = ({
       const dt = time - lastTime;
       lastTime = time;
 
+      if (!isMouseMoving) {
+        // Autonomous movement
+        autoAnimRef.current.currentX = THREE.MathUtils.damp(
+          autoAnimRef.current.currentX,
+          autoAnimRef.current.targetX,
+          4,
+          dt * autoAnimRef.current.speed
+        );
+        autoAnimRef.current.currentY = THREE.MathUtils.damp(
+          autoAnimRef.current.currentY,
+          autoAnimRef.current.targetY,
+          4,
+          dt * autoAnimRef.current.speed
+        );
+
+        vMouse.set(
+          autoAnimRef.current.currentX,
+          autoAnimRef.current.currentY
+        );
+      }
+
       ["x", "y"].forEach((k) => {
-        vMouseDamp[k] = THREE.MathUtils.damp(vMouseDamp[k], vMouse[k], 8, dt);
+        vMouseDamp[k] = THREE.MathUtils.damp(
+          vMouseDamp[k],
+          vMouse[k],
+          8,
+          dt
+        );
       });
 
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(update);
     };
+    generateNewTarget();
     update();
 
     return () => {
@@ -245,6 +302,9 @@ const ShapeBlur = ({
       document.removeEventListener("pointermove", onPointerMove);
       mount.removeChild(renderer.domElement);
       renderer.dispose();
+
+      clearTimeout(autoAnimRef.current.timeoutId);
+      clearTimeout(mouseTimeout);
     };
   }, [
     variation,
