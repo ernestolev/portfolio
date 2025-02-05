@@ -182,6 +182,7 @@ button:hover {
     margin-bottom: 0px;
     margin-top: 10px;
     position: fixed;
+    gap: 10px;
   }
 
   .contactInfo {

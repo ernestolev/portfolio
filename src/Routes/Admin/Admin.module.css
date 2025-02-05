@@ -197,12 +197,12 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.projectslistcontainer{
+.projectslistcontainer {
     max-height: calc(70vh - 200px);
     overflow-y: auto;
 
@@ -217,7 +217,7 @@ button:hover {
     max-height: calc(90vh - 200px);
 }
 
-.addButton{
+.addButton {
     width: auto;
 }
 
@@ -261,7 +261,8 @@ button:hover {
     border-radius: 8px;
     font-weight: 500;
     transition: all 0.3s ease;
-    min-width: 120px;
+    max-width: 120px;
+    margin-right: 10px;
 }
 
 .editBtn:hover {
@@ -294,7 +295,7 @@ button:hover {
 
 
 
-.serviceCard,
+
 .contactCard {
     background: rgba(255, 255, 255, 0.1);
     padding: 1.5rem;
@@ -302,6 +303,49 @@ button:hover {
     margin-bottom: 1rem;
     transition: transform 0.3s ease;
 }
+
+.servicesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.serviceCard {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.serviceCard h3{
+    margin-bottom: 10px;
+}
+
+.imagesGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.imagePreview {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.imagePreview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
 
 .projectCard:hover,
 .serviceCard:hover,
@@ -349,8 +393,8 @@ button:hover {
 
 .contactsSection {
     background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    height: 73vh;
+    padding: 1rem;
+    height: 70vh;
     border-radius: 12px;
     backdrop-filter: blur(10px);
 }
@@ -358,7 +402,7 @@ button:hover {
 .contactInfoForm {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0rem;
 }
 
 .contactInfoForm .formGroup {

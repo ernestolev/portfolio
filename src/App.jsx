@@ -12,6 +12,7 @@ import Loading from '../src/Components/Loading/Loading';
 import Admin from '../src/Routes/Admin/Admin';
 import Login from './Routes/Login/Login';
 import ProtectedRoute from '../src/Routes/ProtectedRoute';
+import Services from './Routes/Services/Services';
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -22,6 +23,7 @@ const Navigation = () => {
     <nav className={styles.nav}>
       <Link to="/">Home</Link>
       <Link to="/projects">Projects</Link>
+      <Link to="/services">Services</Link>
       <Link to="/contact">Contact</Link>
     </nav>
   );
@@ -83,7 +85,6 @@ const Home = () => {
       <header className={styles.header} data-aos="fade-down" data-aos-delay="500">
         <Link to="/admin">
           <h3 className={styles.logo}>Ernesto Levano</h3>
-
         </Link>
 
 
@@ -168,6 +169,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/admin"
@@ -200,6 +202,13 @@ const AnimatedBackground = () => {
           scale: 1.5,
           x: 25,
           y: -25
+        });
+        break;
+      case '/services':
+        setShapePosition({
+          scale: 1.5,
+          x: 0,
+          y: -35
         });
         break;
       default:

@@ -4,7 +4,10 @@ import imageCompression from 'browser-image-compression';
 import styles from './ServiceForm.module.css';
 
 const ServiceForm = ({ service, onSubmit, isUploading }) => {
-    const [formData, setFormData] = useState(service || {
+    const [formData, setFormData] = useState(service ? {
+        ...service,
+        services: Array.isArray(service.services) ? service.services.join(', ') : service.services
+    } : {
         category: '',
         services: '',
         images: []

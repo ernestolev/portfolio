@@ -88,6 +88,7 @@ const Contact = () => {
         <nav className={styles.nav}>
           <Link to="/">Home</Link>
           <Link to="/projects">Projects</Link>
+          <Link to="/services">Services</Link>
           <Link to="/contact"><span className={styles.resalt} >Contact</span> </Link>
         </nav>
       </header>

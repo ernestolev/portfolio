@@ -1,0 +1,225 @@
+.layout {
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.nav a:hover {
+    opacity: 0.8;
+}
+
+.main {
+    flex: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.main h1{
+    text-align: left;
+    font-size: 3rem;
+    font-family: "Neonderthaw", serif;
+    color: #b8b8b8;
+}
+
+.title {
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.servicesGrid {
+    display: flex;
+    flex-direction: column;
+    font-family: "PT Sans Narrow", serif;
+    gap: 2rem;
+}
+
+.serviceCard {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.serviceCard:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.serviceCard h2 {
+    color: white;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.iconGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    align-content: start;
+}
+
+.iconWrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.iconWrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.serviceContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+
+.serviceContent h2 {
+    color: white;
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.servicesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+
+.serviceItem {
+    background: rgba(76, 61, 189, 0.2);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.serviceItem:hover {
+    background: rgba(76, 61, 189, 0.4);
+    transform: translateY(-2px);
+}
+
+.resalt {
+    color: white;
+    font-weight: 800;
+}
+
+
+
+.logo {
+    font-family: "PT Sans Narrow", serif;
+    font-size: 1.5rem;
+    color: white;
+}
+
+
+.loading {
+    text-align: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 468px) {
+    .layout {
+        padding: 0rem;
+    }
+
+    .servicesGrid {
+        grid-template-columns: 1fr;
+        margin-bottom: 30px;
+        gap: 1rem;
+    }
+
+    .header {
+        font-size: 0.7rem;
+        padding: 0px;
+        width: 90%;
+        margin-bottom: 0px;
+        margin-top: 10px;
+        position: fixed;
+        gap: 10px;
+    }
+
+    .nav {
+        gap: 1rem;
+      }
+
+    .main {
+        padding: 0 0rem;
+        margin-top: 100px;
+    }
+
+    .main h1 {
+        text-align: left;
+        margin-bottom: 20px;
+        font-size: 3rem;
+        font-family: "Neonderthaw", serif;
+        color: #b8b8b8;
+    }
+
+    .serviceCard {
+        padding: 15px;
+        gap: 20px;
+
+    }
+
+    .iconGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .iconWrapper {
+        width: 50px;
+        height: 50px;
+    }
+
+    .serviceContent h2 {
+        font-size: 1.2rem;
+    }
+
+    .serviceItem {
+        font-size: 0.8rem;
+    }
+
+}

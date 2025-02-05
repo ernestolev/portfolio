@@ -338,14 +338,16 @@ const Admin = () => {
     const handleServiceSubmit = async (formData) => {
         try {
             setUploadingImages(true);
-
+            
             const serviceData = {
                 category: formData.category,
-                services: formData.services.split(',').map(service => service.trim()),
+                services: typeof formData.services === 'string' 
+                    ? formData.services.split(',').map(service => service.trim())
+                    : formData.services,
                 images: formData.images,
                 updatedAt: new Date().toISOString()
             };
-
+    
             if (editingService) {
                 await updateDoc(doc(db, 'services', editingService), serviceData);
                 setEditingService(null);
@@ -355,13 +357,13 @@ const Admin = () => {
                     createdAt: new Date().toISOString()
                 });
             }
-
+    
             setIsModalOpen(false);
             await fetchData();
-
+            
         } catch (error) {
             console.error('Error saving service:', error);
-            throw error;
+            alert('Error saving service. Please try again.');
         } finally {
             setUploadingImages(false);
         }
