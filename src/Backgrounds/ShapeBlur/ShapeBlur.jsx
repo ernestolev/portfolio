@@ -15,6 +15,7 @@ const fragmentShader = /* glsl */ `
   uniform vec2 u_mouse;
   uniform vec2 u_resolution;
   uniform float u_pixelRatio;
+  uniform mat4 u_rotation;
 
   uniform float u_shapeSize;
   uniform float u_roundness;
@@ -91,31 +92,34 @@ const fragmentShader = /* glsl */ `
   void main() {
       vec2 st = st0 + 0.5;
       vec2 posMouse = mx * vec2(1., -1.) + 0.5;
+
+      vec4 rotatedPoint = u_rotation * vec4(st - 0.5, 0.0, 1.0);
+      vec2 rotatedSt = rotatedPoint.xy + 0.5;
       
-      float size = u_shapeSize;
+     float size = u_shapeSize;
       float roundness = u_roundness;
       float borderSize = u_borderSize;
       float circleSize = u_circleSize;
       float circleEdge = u_circleEdge;
       
       float sdfCircle = fill(
-          sdCircle(st, posMouse),
+          sdCircle(rotatedSt, posMouse),
           circleSize,
           circleEdge
       );
       
       float sdf;
       if (VAR == 0) {
-          sdf = sdRoundRect(st, vec2(size), roundness);
+          sdf = sdRoundRect(rotatedSt, vec2(size), roundness);
           sdf = strokeAA(sdf, 0.0, borderSize, sdfCircle) * 4.0;
       } else if (VAR == 1) {
-          sdf = sdCircle(st, vec2(0.5));
+          sdf = sdCircle(rotatedSt, vec2(0.5));
           sdf = fill(sdf, 0.6, sdfCircle) * 1.2;
       } else if (VAR == 2) {
-          sdf = sdCircle(st, vec2(0.5));
+          sdf = sdCircle(rotatedSt, vec2(0.5));
           sdf = strokeAA(sdf, 0.58, 0.02, sdfCircle) * 4.0;
       } else if (VAR == 3) {
-          sdf = sdPoly(st - vec2(0.5, 0.45), 0.3, 3);
+          sdf = sdPoly(rotatedSt - vec2(0.5, 0.45), 0.3, 3);
           sdf = fill(sdf, 0.05, sdfCircle) * 1.4;
       }
       
@@ -157,6 +161,13 @@ const ShapeBlur = ({
 
 
   useEffect(() => {
+
+    const rotationMatrix = new THREE.Matrix4();
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+    let currentRotationX = 0;
+    let currentRotationY = 0;
+
 
     const mount = mountRef.current;
     let animationFrameId;
@@ -205,6 +216,7 @@ const ShapeBlur = ({
         u_borderSize: { value: borderSize },
         u_circleSize: { value: circleSize },
         u_circleEdge: { value: circleEdge },
+        u_rotation: { value: rotationMatrix },
       },
       defines: { VAR: variation },
       transparent: true,
@@ -217,6 +229,9 @@ const ShapeBlur = ({
       const rect = mount.getBoundingClientRect();
       vMouse.set(e.clientX - rect.left, e.clientY - rect.top);
       isMouseMoving = true;
+
+      targetRotationX = ((e.clientY - rect.top) / rect.height - 0.5) * 0.5;
+      targetRotationY = ((e.clientX - rect.left) / rect.width - 0.5) * 0.5;
 
       clearTimeout(mouseTimeout);
       mouseTimeout = setTimeout(() => {
@@ -258,8 +273,19 @@ const ShapeBlur = ({
       const dt = time - lastTime;
       lastTime = time;
 
+      currentRotationX = THREE.MathUtils.damp(currentRotationX, targetRotationX, 4, dt);
+      currentRotationY = THREE.MathUtils.damp(currentRotationY, targetRotationY, 4, dt);
+
+      rotationMatrix.makeRotationFromEuler(
+        new THREE.Euler(
+          currentRotationX,
+          currentRotationY,
+          0,
+          'XYZ'
+        )
+      );
+
       if (!isMouseMoving) {
-        // Autonomous movement
         autoAnimRef.current.currentX = THREE.MathUtils.damp(
           autoAnimRef.current.currentX,
           autoAnimRef.current.targetX,
@@ -288,6 +314,7 @@ const ShapeBlur = ({
         );
       });
 
+      material.uniforms.u_rotation.value = rotationMatrix;
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(update);
     };
